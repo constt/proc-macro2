@@ -10,6 +10,8 @@ use std::panic;
 #[cfg(super_unstable)]
 use std::path::PathBuf;
 
+use crate::LineColumn;
+
 #[derive(Clone)]
 pub(crate) enum TokenStream {
     Compiler(DeferredTokenStream),
