@@ -5,7 +5,7 @@
 //
 // afl++:
 //
-//     cargo install afl
+//     cargo install cargo-afl
 //     cargo afl build --no-default-features --features afl --release
 //     cargo afl fuzz -i in -o out target/release/parse_token_stream
 //
@@ -43,7 +43,7 @@ fn main() {
 }
 
 #[cfg(feature = "libfuzzer")]
-libfuzzer_sys::fuzz_target!(|bytes: &[u8]| { do_fuzz(bytes) });
+libfuzzer_sys::fuzz_target!(|bytes: &[u8]| do_fuzz(bytes));
 
 #[cfg(feature = "afl")]
 fn main() {
@@ -60,6 +60,8 @@ fn main() {
 
 fn do_fuzz(bytes: &[u8]) {
     let ..=199 = bytes.len() else { return };
-    let Ok(string) = str::from_utf8(bytes) else { return };
+    let Ok(string) = str::from_utf8(bytes) else {
+        return;
+    };
     let _ = string.parse::<proc_macro2::TokenStream>();
 }
